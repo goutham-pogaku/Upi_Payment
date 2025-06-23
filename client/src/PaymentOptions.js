@@ -26,7 +26,10 @@ function PaymentOptions() {
     <div style={{ padding: 20 }}>
       <h2>Choose Payment App</h2>
       <p>Amount: ₹{amount}</p>
-      <button onClick={handlePay}>Pay with UPI</button>
+     <a href={upiLink}>
+  <button>Pay with UPI</button>
+</a>
+
     </div>
   );
 }
