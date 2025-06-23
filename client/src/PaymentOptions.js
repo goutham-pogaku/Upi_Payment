@@ -5,9 +5,10 @@ function PaymentOptions() {
   const [searchParams] = useSearchParams();
   const [upiLink, setUpiLink] = useState('');
   const amount = searchParams.get('amount');
-
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
+console.log("Using backend:", backendUrl);
  useEffect(() => {
-  fetch('/api/generate-upi-link', {
+ fetch(`${process.env.REACT_APP_BACKEND_URL}/api/generate-upi-link`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ amount, strategy: 'random' })
