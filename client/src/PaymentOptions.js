@@ -6,17 +6,19 @@ function PaymentOptions() {
   const [upiLink, setUpiLink] = useState('');
   const amount = searchParams.get('amount');
 
-  useEffect(() => {
-    fetch('/api/generate-upi-link', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount, strategy: 'random' }) // or 'time'
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.upiLink) setUpiLink(data.upiLink);
-      });
-  }, [amount]);
+ useEffect(() => {
+  fetch('/api/generate-upi-link', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount, strategy: 'random' })
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Received UPI link from server:", data.upiLink);  // ✅ Add this
+      if (data.upiLink) setUpiLink(data.upiLink);
+    });
+}, [amount]);
+
 
   const handlePay = () => {
     if (upiLink) window.location.href = upiLink;
