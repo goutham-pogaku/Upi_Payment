@@ -1,38 +1,31 @@
 import { useSearchParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import './App.css';
 
 function PaymentOptions() {
   const [searchParams] = useSearchParams();
-  const [upiLink, setUpiLink] = useState('');
   const amount = searchParams.get('amount');
-const backendUrl = process.env.REACT_APP_BACKEND_URL;
-console.log("Using backend:", backendUrl);
- useEffect(() => {
- fetch(`${process.env.REACT_APP_BACKEND_URL}/api/generate-upi-link`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount, strategy: 'random' })
-  })
-    .then(res => res.json())
-    .then(data => {
-      console.log("Received UPI link from server:", data.upiLink);  // ✅ Add this
-      if (data.upiLink) setUpiLink(data.upiLink);
-    });
-}, [amount]);
 
-
-  const handlePay = () => {
-    if (upiLink) window.location.href = upiLink;
+  const handleAppPay = (app) => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/generate-upi-link`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount, strategy: 'random', app })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.upiLink) window.location.href = data.upiLink;
+      });
   };
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Choose Payment App</h2>
+      <h2>Select Payment App</h2>
       <p>Amount: ₹{amount}</p>
-     <a href={upiLink}>
-  <button>Pay with UPI</button>
-</a>
-
+      <div className="buttons">
+        <button onClick={() => handleAppPay('gpay')}><img src="/gpay.png" alt="GPay" /></button>
+        <button onClick={() => handleAppPay('phonepe')}><img src="/phonepe.png" alt="PhonePe" /></button>
+        <button onClick={() => handleAppPay('paytm')}><img src="/paytm.png" alt="Paytm" /></button>
+      </div>
     </div>
   );
 }

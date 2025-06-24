@@ -1,26 +1,30 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
-function Home() {
+function App() {
   const [amount, setAmount] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     navigate(`/pay?amount=${amount}`);
   };
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Enter Amount</h2>
-      <input
-        type="number"
-        placeholder="Enter Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Add Amount</button>
+      <h2>Add Amount</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Enter amount"
+          required
+        />
+        <button type="submit">Add Amount</button>
+      </form>
     </div>
   );
 }
 
-export default Home;
+export default App;
